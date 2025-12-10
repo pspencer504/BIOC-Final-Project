@@ -5,6 +5,8 @@ Authors: Ian Ortega, Nabil Othman, Paige Spencer
 
 Date: 12-9-2025
 
+NOTE: Code adapted from https://learn.microsoft.com/en-us/azure/ai-services/speech-service/get-started-speech-to-text?tabs=new-foundry%2Cwindows&pivots=programming-language-python
+
 """
 
 import os
