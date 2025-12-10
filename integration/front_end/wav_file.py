@@ -13,9 +13,9 @@ def data_to_wav_soundfile(input_data, output_wav_file, sample_rate):
     """
     try:
         sf.write(output_wav_file, input_data, sample_rate)
-        print(f"Successfully wrote audio data to '{output_wav_file}'")
+        # print(f"Successfully wrote audio data to '{output_wav_file}'")
     except Exception as e:
-        print(f"Error during conversion: {e}")
+        print(f"Error during conversion to wav file: {e}")
 
 
 
