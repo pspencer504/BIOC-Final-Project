@@ -17,13 +17,18 @@ from pySerial import serial_connect, serial_receive_batch, process_data, process
 from wav_file import data_to_wav_soundfile
 from Azure import recognize_from_microphone
 
-BUFF_LENGTH = 30000
+BUFF_LENGTH = 20000
 
 ser = serial_connect()
 
 count = 0
 
 while(True):
+    
+    #clear serial buffers
+    ser.reset_input_buffer()
+    ser.reset_output_buffer()
+    
     print_commands()
     input("\n\nPress enter and begin talking! ")
     ser.write(b'e')

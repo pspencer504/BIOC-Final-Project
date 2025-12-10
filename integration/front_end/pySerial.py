@@ -46,7 +46,6 @@ def serial_connect():
 
 """
 def serial_receive_batch(ser, NUM_nums, BATCH_SIZE):
-    """Receive one batch of data from already-connected serial"""
     ser.reset_input_buffer()
     NUM_BATCHS = NUM_nums // BATCH_SIZE
     master_arr = []
@@ -91,9 +90,9 @@ def process_data(data_1,data_2, count):
     valid_22 = data_2[split2:L2]
 
     if(count == 0):
-        final_sound = np.concatenate((valid_11, valid_21, valid_12, valid_22)) #NOTE: valid_21 is supposed to be second in line, but do to errors that I do not understand, it is a bunch of zeros
+        final_sound = np.concatenate((valid_11, valid_21, valid_12, valid_22)) 
     else:
-        final_sound = np.concatenate((valid_11, valid_12, valid_22)) #NOTE: valid_21 is supposed to be second in line, but do to errors that I do not understand, it is a bunch of zeros
+        final_sound = np.concatenate((valid_11, valid_12, valid_22)) #NOTE: valid_21 is supposed to be second in line, but do to errors in the Arduino buffers that I do not understand, it is a bunch of zeros after iteration 1
 
     final_sound = final_sound.astype(float)
     
@@ -120,7 +119,7 @@ def process_data_simple(data_1,data_2):
 
 """
 
-@brief process data function that just normalizes the data array
+@brief process data function that just normalizes a single data array
 
 
 """

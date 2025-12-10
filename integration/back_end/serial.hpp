@@ -45,6 +45,7 @@ void send_num(int32_t num);
 void send_to_python(uint32_t NUM_nums, uint32_t BATCH_SIZE, uint32_t* signal)
 {
 
+    serial.sync();
     //calculate the number of batches needed
     uint16_t NUM_BATCHES = NUM_nums / BATCH_SIZE;
 
@@ -78,6 +79,9 @@ void send_to_python(uint32_t NUM_nums, uint32_t BATCH_SIZE, uint32_t* signal)
         if(receive != 'r')
             break;
     }
+
+    //flush buffer
+    serial.sync();
     thread_sleep_for(1000);
 }
 

@@ -18,7 +18,7 @@
     #define MIC_CLK 26
     #define MIC_DOUT 25
     #define MIC_VDD 17
-    #define BUFF_LENGTH 30000
+    #define BUFF_LENGTH 20000
     #define ERROR_VAL -24176
 
     //data buffers 
@@ -84,10 +84,16 @@
     uint8_t read_mic(uint32_t* data_buffer, uint32_t* data_buffer2)
     {
 
-        // memset(data_buffer, 0, BUFF_LENGTH * sizeof(uint32_t));
-        // memset(data_buffer2, 0, BUFF_LENGTH * sizeof(uint32_t));
-            // Fully reset PDM state
+        //flush serial buffer before enabling PDM
+        serial.sync();
+
+        //reset memory
+        memset(data_buffer, 0, BUFF_LENGTH * sizeof(uint32_t));
+        memset(data_buffer2, 0, BUFF_LENGTH * sizeof(uint32_t));
+
+        //reset PDM
         nrf_pdm_disable();
+        thread_sleep_for(10);
         nrf_pdm_enable();
         
         // Clear all buffers
@@ -95,6 +101,8 @@
         memset(data_buffer2, 0, BUFF_LENGTH * sizeof(uint32_t));
 
         BLUE_ON();
+
+        //set initial buffer
         nrf_pdm_buffer_set(data_buffer, BUFF_LENGTH);
 
         //start recording
@@ -112,6 +120,7 @@
 
         //reset end flag
         nrf_pdm_event_clear(NRF_PDM_EVENT_END);
+
         //change out buffer
         if(nrf_pdm_event_check(NRF_PDM_EVENT_STARTED))
         {
@@ -137,17 +146,18 @@
         }
         nrf_pdm_event_clear(NRF_PDM_EVENT_END);
 
+        //wait til done
         while (!nrf_pdm_event_check(NRF_PDM_EVENT_END))
         {
         }
         nrf_pdm_event_clear(NRF_PDM_EVENT_END);
 
 
-
         //stop
         nrf_pdm_task_trigger(NRF_PDM_TASK_STOP);
         BLUE_OFF();
 
+        //send data serially
         RED_ON();
         send_to_python(BUFF_LENGTH, BUFF_LENGTH, data_buffer);
         send_to_python(BUFF_LENGTH, BUFF_LENGTH, data_buffer2);
