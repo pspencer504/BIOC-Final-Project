@@ -8,8 +8,8 @@ Date: 12-9-2025
 """
 #import libraries
 import serial
-import numpy as np
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -55,7 +55,6 @@ def serial_receive_batch(ser, NUM_nums, BATCH_SIZE):
     # ser.flush()
 
 
-    start_time = time.time()
     for i in range(NUM_BATCHS):
         gobyte = ser.read_until(b'g', 1)
         ser.write(b'r')
@@ -77,7 +76,7 @@ def serial_receive_batch(ser, NUM_nums, BATCH_SIZE):
 
 """
 
-def process_data(data_1,data_2):
+def process_data(data_1,data_2, count):
 
     data_1 = data_1.astype(np.float64) / 32768.0  
     data_2 = data_2.astype(np.float64) / 32768.0
@@ -91,7 +90,10 @@ def process_data(data_1,data_2):
     valid_21 = data_2[0:split2]
     valid_22 = data_2[split2:L2]
 
-    final_sound = np.concatenate((valid_11, valid_21, valid_12, valid_22))
+    if(count == 0):
+        final_sound = np.concatenate((valid_11, valid_21, valid_12, valid_22)) #NOTE: valid_21 is supposed to be second in line, but do to errors that I do not understand, it is a bunch of zeros
+    else:
+        final_sound = np.concatenate((valid_11, valid_12, valid_22)) #NOTE: valid_21 is supposed to be second in line, but do to errors that I do not understand, it is a bunch of zeros
 
     final_sound = final_sound.astype(float)
     

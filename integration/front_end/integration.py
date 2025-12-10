@@ -13,13 +13,15 @@ import matplotlib.pyplot as plt
 from playsound import playsound
 
 from printing import print_commands, command_result, calculate_command
-from pySerial import serial_connect, serial_receive_batch, process_data
+from pySerial import serial_connect, serial_receive_batch, process_data, process_data_simple
 from wav_file import data_to_wav_soundfile
 from Azure import recognize_from_microphone
 
 BUFF_LENGTH = 30000
 
 ser = serial_connect()
+
+count = 0
 
 while(True):
     print_commands()
@@ -33,7 +35,7 @@ while(True):
 
     data1 = np.array(arr1, dtype=np.int16)
     data2 = np.array(arr2, dtype=np.int16)
-    sound = process_data(data1,data2)
+    sound = process_data(data1,data2, count)
 
     data_to_wav_soundfile(sound, "omgIfThisWorks.wav", 16125)
     text = recognize_from_microphone("omgIfThisWorks.wav")
@@ -51,3 +53,4 @@ while(True):
     val = float(num_raw[0]/100)
     
     command_result(command, val)
+    count = count + 1
