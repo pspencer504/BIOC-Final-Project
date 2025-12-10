@@ -1,8 +1,15 @@
+/*Integration code for Arduino for BioC final project
+
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
+
+Date: 12-9-2025
+
+*/
+
+
 #include "mbed.h"
 #include "NOthman_binaryutils.hpp"
 #include "nrf_pdm.h"
-#include "nrf_gpio.h"
-#include "nrf_clock.h"
 #include "sensor_api.hpp"
 #include "mic.hpp"
 
@@ -19,7 +26,9 @@ LED is Red when the Arduino is sending data serially to Python
 */
 
 
-// main() runs in its own thread in the OS
+/**
+ * @brief: main function that runs forever and executes all code
+ */
 int main()
 {
 
@@ -49,7 +58,7 @@ int main()
         GREEN_OFF();
 
         //read mic and perform the associated action
-        action = integration_testing(data_buffer,data_buffer2);
+        action = read_mic(data_buffer,data_buffer2);
         perform_action(action, i2c);
     }    
 }

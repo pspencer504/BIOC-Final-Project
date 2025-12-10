@@ -1,5 +1,12 @@
-#ifndef SENSOR_API_HPP
-#define SENSOR_API_HPP
+/*
+Code for reading from Arduino sensors
+
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
+
+Date: 12-9-2025
+
+*/
+#pragma once
 
 #include "mbed.h"
 
@@ -38,7 +45,7 @@ typedef enum {
     LPF_ODR_DIV_20 = 0x0C
 } LowPassFilter;
 
-//APIS
+//FUNCTION DECLARATIONS
 
 
 /**
@@ -363,4 +370,3 @@ bool set_low_power_mode(I2C &i2c, bool enable) {
     return true;
 }
 
-#endif // SENSOR_API_HPP

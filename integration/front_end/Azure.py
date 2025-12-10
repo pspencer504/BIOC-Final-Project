@@ -1,19 +1,31 @@
+"""
+Azure API code
+
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
+
+Date: 12-9-2025
+
+"""
+
 import os
 import time
 import azure.cognitiveservices.speech as speechsdk
 
 
 def recognize_from_microphone(file):
-     # This example requires environment variables named "SPEECH_KEY" and "ENDPOINT"
-     # Replace with your own subscription key and endpoint, the endpoint is like : "https://YourServiceRegion.api.cognitive.microsoft.com"
+
+    #get key and region as environment variables and create a speech object
     speech_config = speechsdk.SpeechConfig(subscription=os.environ.get('SPEECH_KEY'), region=os.environ.get('ENDPOINT'))
     speech_config.speech_recognition_language="en-US"
 
+    #pass file name to speech recognizer
     audio_config = speechsdk.audio.AudioConfig(filename=file)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
     speech_recognition_result = speech_recognizer.recognize_once_async().get()
 
+
+    #process speech, catch errors, and print results
     if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
         print("\nYou said: {}".format(speech_recognition_result.text))
         time.sleep(2)

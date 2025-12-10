@@ -1,3 +1,13 @@
+"""
+Integration  code for BIOC final project
+
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
+
+Date: 12-9-2025
+
+"""
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from playsound import playsound

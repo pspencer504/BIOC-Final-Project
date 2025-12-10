@@ -1,13 +1,26 @@
+"""
+Code for serial communiccation between Python and Arduino 
 
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
 
+Date: 12-9-2025
+
+"""
 #import libraries
 import serial
 import numpy as np
 import time
 import matplotlib.pyplot as plt
 
+
+"""
+
+    @brief: establsih a serial connection
+    @return serial object
+
+"""
+
 def serial_connect():
-    """Connect to Arduino and return serial object"""
     for i in range(25):
         try:
             COM_num = "COM" + str(i)
@@ -18,6 +31,20 @@ def serial_connect():
             continue
     raise Exception("Could not find Arduino on any COM port")
 
+
+
+"""
+@brief receive serial data in batches
+@param ser serial object
+@param NUM_nums the number of numbers
+@param BATCH_size the number of batches
+
+@note: these params must agree with the Arduino code that is sending the data
+
+@return an array of data
+
+
+"""
 def serial_receive_batch(ser, NUM_nums, BATCH_SIZE):
     """Receive one batch of data from already-connected serial"""
     ser.reset_input_buffer()
@@ -40,6 +67,16 @@ def serial_receive_batch(ser, NUM_nums, BATCH_SIZE):
     return master_arr
 
 
+"""
+@brief function to process data arrays into one continuous sound array. Data is processed according to how it is split during collection
+@param data_1 first data array
+@param data_2 second data array
+
+@return final data array
+
+
+"""
+
 def process_data(data_1,data_2):
 
     data_1 = data_1.astype(np.float64) / 32768.0  
@@ -48,7 +85,7 @@ def process_data(data_1,data_2):
     L2 = len(data_1)
     split2 = L2 // 2
 
-
+    #move around data according to how it was collected
     valid_11 = data_1[0:split2]
     valid_12 = data_1[split2:L2]
     valid_21 = data_2[0:split2]
@@ -60,40 +97,35 @@ def process_data(data_1,data_2):
     
     return final_sound
 
+
+
+"""
+
+@brief same as process_data EXCEPT it assumes that data_1 and data_2 are two arrays that should be concatenated without any reording
+
+"""
 def process_data_simple(data_1,data_2):
 
     data_1 = data_1.astype(np.float64) / 32768.0  
     data_2 = data_2.astype(np.float64) / 32768.0
 
-    L2 = len(data_1)
-    split2 = L2 // 2
-
-    # print(f"{L2} {split2}")
-
-    valid_11 = data_1[0:split2]
-    valid_12 = data_1[split2:L2]
-    valid_21 = data_2[0:split2]
-    valid_22 = data_2[split2:L2]
-
-    # print(valid_11.shape)
-    # print(valid_12.shape)
-    # print(valid_21.shape)
-    # print(valid_22.shape)
-
-    # final_sound = np.concatenate((valid_11, valid_21, valid_12, valid_22))
     final_sound = np.concatenate((data_1, data_2))
-
     final_sound = final_sound.astype(float)
-    # final_sound /= 2**15
     
     return final_sound
 
+
+
+"""
+
+@brief process data function that just normalizes the data array
+
+
+"""
 def process_data_simpler(data_1):
-
-    data_1 = data_1.astype(np.float64) / 32768.0  
-
-    final_sound = data_1.astype(float)
     
+    data_1 = data_1.astype(np.float64) / 32768.0  
+    final_sound = data_1.astype(float)
     return final_sound
 
 

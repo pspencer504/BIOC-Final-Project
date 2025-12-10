@@ -1,8 +1,25 @@
+"""
+Code for large print statements and processing commands
+
+Authors: Ian Ortega, Nabil Othman, Paige Spencer
+
+Date: 12-9-2025
+
+"""
+
 from enum import Enum
 import time
 
 ERROR_VAL = -24176
 
+
+
+
+"""
+
+@brief function to print what the commands are to the user
+
+"""
 def print_commands():
     print("\n\n\n\nThe voice command options are...")
     print("\t1. Read temperature in Fahrenheit")
@@ -17,6 +34,11 @@ def print_commands():
     print("\t10. Toggle sampling frequency\n\t\t This toggles between 10 Hz and 75 Hz.")
 
 
+"""
+@brief enum used for convenience when coding
+
+"""
+
 class Commands(Enum):
     TEMPF = 1
     TEMPC = 2
@@ -28,6 +50,15 @@ class Commands(Enum):
     FILTER_OFF = 8
     WHOAMI = 9
     FS = 10
+ 
+ 
+"""
+
+@brief function to process text into commands
+@param text the message received from azure
+@return the command index
+
+"""
   
 def calculate_command(text):
     text = text.lower()
@@ -59,7 +90,15 @@ def calculate_command(text):
     
     
   
-    
+"""
+
+@brief function to print results of whatever command to terminal
+@param command the command index
+@val the value received from Arduino
+@return nothing
+
+
+"""
 def command_result(command, val):
     
     if(val == ERROR_VAL):
